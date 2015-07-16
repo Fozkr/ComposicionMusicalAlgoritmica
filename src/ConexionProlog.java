@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.Hashtable;
+import jpl.*;
+import jpl.Query;
 
 /**
  *
@@ -27,7 +29,7 @@ public class ConexionProlog {
     protected String[] ejecutarConsulta(String nombreArchivo, boolean conMelodia) {
         String[] resultado = null;
         if(("").equals(nombreArchivo))
-            nombreArchivo = "cancion.txt";
+            nombreArchivo = "prueba.txt";
         try {
             // Se abre el archivo
             FileInputStream fstream = new FileInputStream(nombreArchivo);
