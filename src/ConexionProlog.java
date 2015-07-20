@@ -4,8 +4,8 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.Hashtable;
-import jpl.*;
-import jpl.Query;
+//import jpl.*;
+//import jpl.Query;
 
 /**
  *
