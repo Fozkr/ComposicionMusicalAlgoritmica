@@ -105,19 +105,21 @@ cancionRock(E,S,M,X) :-			% Donde se construye la canción realmente
 % escogerEscala/1(-escala)
 % Escoge una escala a partir de un valor aleatorio.
 escogerEscala(E) :-
-	random_between(1,3,A),		% Genera números aleatorios para duraciones de distintas partes de la canción
+	random_between(1,4,A),		% Genera números aleatorios para duraciones de distintas partes de la canción
 	escogerEscalaEspecifica(A,E).
 
 % escogerEscalaEspecifica/2(+numeroAleatorio,-escala)
 escogerEscalaEspecifica(A,E) :-
 	A == 1,
-	% E = [0,2,4,5,7,9,11, 12,14,16,17,19,21,23, 24,26,28,29,31,33,35, 36,38,40,41,43,45,47, 48,50,52,53,55,57,59, 60,62,64,65,67,69,71, 72,74,76,77,79,81,83, 84,86,88].  % Escala C mayor
 	E = [24,26,28,29,31,33,35, 36,38,40,41,43,45,47, 48,50,52,53,55,57,59, 60,62,64,65,67,69,71, 72,74,76,77,79,81,83, 84,86,88].	% Escala C mayor
 escogerEscalaEspecifica(A,E) :-
 	A == 2,
 	E = [24,26,27,29,31,32,35, 36,38,39,41,43,44,47, 48,50,51,53,55,56,59, 60,62,63,65,67,68,71, 72,74,75,77,79,80,83, 84,86,87].	% Harmonic minor
 escogerEscalaEspecifica(A,E) :-
 	A == 3,
+	E = [24,26,28,31,33, 36,38,40,43,45, 48,50,52,55,57, 60,62,64,67,69, 72,74,76,79,81, 84,86,88].	% Pentatonic Major
+escogerEscalaEspecifica(A,E) :-
+	A == 4,
 	E = [24,25,28,29,31,32,35, 36,37,40,41,43,44,47, 48,49,52,53,55,56,59, 60,61,64,65,67,68,71, 72,73,76,77,79,80,83, 84,85,88].	% Byzantine
 % agregar más escalas!!!
 
@@ -186,12 +188,10 @@ generarDuracionSiguiente(V,N) :-
 generarDuracion(V,D,N) :-
 	D == 1,						% La nueva será la mitad de la anterior
 	A is V/2,
-	A > 1/8,					% Duración mínima: 1/4
+	A > 1/4,					% Duración mínima: 1/4
 	N is A.
 generarDuracion(V,D,N) :-
 	D == 1,						% La nueva será la mitad de la anterior
-	% A is V/2,
-	% A <= 1/8,					% Duración mínima: 1/4
 	B is V*2,					% Si es menor a eso, se duplica en lugar de dividir
 	N is B.
 generarDuracion(V,D,N) :-
@@ -204,8 +204,6 @@ generarDuracion(V,D,N) :-
 	N is A.
 generarDuracion(V,D,N) :-
 	D == 3,						% La nueva será la mitad de la anterior
-	% A is V*2,
-	% A >= 4,					% Duración máxima: 1
 	B is V/2,					% Si es menor a eso, se duplica en lugar de dividir
 	N is B.
 

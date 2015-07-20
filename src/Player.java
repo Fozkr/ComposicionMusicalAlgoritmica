@@ -98,31 +98,33 @@ public class Player
             }
             createShortEvent(NOTEON, 0);
             ticks += 4;
-            createShortEvent(NOTEON, 0);
+            createShortEvent(NOTEOFF, 0);
             ticks += 4;
             
-            //prueba
+            //prueba de agregar un metrónomo a la canción
             // 115 Steel Drums
-//            Track trackMetronome = sequence.createTrack();
-//            long ticks2 = ticks;
-//            ticks = 0;
-//            createShortEvent(PROGRAM, 115);
-//            for(int i=0; i<ticks2; ++i)
-//            {
-//                ShortMessage message = new ShortMessage();
-//                try
-//                {
-//                    message.setMessage(NOTEON, 40, 64);
-//                    MidiEvent event = new MidiEvent(message, ticks);
-//                    trackMetronome.add(event);
-//                }
-//                catch (Exception ex)
-//                {
-//                    ex.printStackTrace();
-//                }
-//                ticks += 10;
-//            }
-            
+            Track trackMetronome = sequence.createTrack();
+            long ticks2 = ticks;
+            ticks = 0;
+            for(int i=0; i<ticks2; i+=10)
+            {
+                ShortMessage messageON = new ShortMessage();
+                ShortMessage messageOFF = new ShortMessage();
+                try
+                {
+                    messageON.setMessage(NOTEON, 40, 64);
+                    MidiEvent eventON = new MidiEvent(messageON, ticks);
+                    trackMetronome.add(eventON);
+                    messageOFF.setMessage(NOTEOFF, 40, 64);
+                    MidiEvent eventOFF = new MidiEvent(messageOFF, ticks+1);
+                    trackMetronome.add(eventOFF);
+                    ticks += 10;
+                }
+                catch (Exception ex)
+                {
+                    ex.printStackTrace();
+                }
+            }
         }
         catch (Exception ex)
         {
