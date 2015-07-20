@@ -70,7 +70,7 @@ public class ConexionProlog {
                     indiceDeResultado += 2;
                 }
                 // Impresion del arreglo para comprobacion
-                imprimirArregloDeString(resultado);
+                //imprimirArregloDeString(resultado);
             }
             // Caso con melodia
             while(conMelodia && (strLinea = buffer.readLine()) != null) {

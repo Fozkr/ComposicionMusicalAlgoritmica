@@ -22,7 +22,7 @@ public class JFNotas extends javax.swing.JFrame {
      * Constructor del JFrame
      */
     public JFNotas() {
-        super("Composión algorítmica");
+        super("Composición musical algorítmica");
         initComponents();
         inicializarVariables();
     }

@@ -72,15 +72,15 @@ public class Player
         track = sequence.createTrack();
         try
         {
-            // 24 Nylon-str.Gt
-            // 25 Steel-str.Gt
-            // 26 Jazz Gt.    
-            // 27 Clean Gt.   
-            // 28 Muted Gt.   
-            // 29 Overdrive Gt
-            // 30 DistortionGt
-            // 31 Gt.Harmonics
-            createShortEvent(PROGRAM, 29);
+            // 25 Nylon-str.Gt
+            // 26 Steel-str.Gt
+            // 27 Jazz Gt.    
+            // 28 Clean Gt.   
+            // 29 Muted Gt.   
+            // 30 Overdrive Gt
+            // 31 DistortionGt
+            // 32 Gt.Harmonics
+            createShortEvent(PROGRAM, 30);
             for(int i=0; i<notasYduraciones.length && notasYduraciones[i]!=null; i+=2)
             {
                 if(Integer.parseInt(notasYduraciones[i]) < 0 && Double.parseDouble(notasYduraciones[i+1]) < 0.0) //divisor
@@ -100,6 +100,29 @@ public class Player
             ticks += 4;
             createShortEvent(NOTEON, 0);
             ticks += 4;
+            
+            //prueba
+            // 115 Steel Drums
+//            Track trackMetronome = sequence.createTrack();
+//            long ticks2 = ticks;
+//            ticks = 0;
+//            createShortEvent(PROGRAM, 115);
+//            for(int i=0; i<ticks2; ++i)
+//            {
+//                ShortMessage message = new ShortMessage();
+//                try
+//                {
+//                    message.setMessage(NOTEON, 40, 64);
+//                    MidiEvent event = new MidiEvent(message, ticks);
+//                    trackMetronome.add(event);
+//                }
+//                catch (Exception ex)
+//                {
+//                    ex.printStackTrace();
+//                }
+//                ticks += 10;
+//            }
+            
         }
         catch (Exception ex)
         {
@@ -117,14 +140,14 @@ public class Player
         try
         {
             device.open();
-                Synthesizer synthesizer = MidiSystem.getSynthesizer();
-                synthesizer.open();
-                Instrument instruments[];
-                instruments = synthesizer.getDefaultSoundbank().getInstruments();
-                for(int i=0; i<instruments.length; ++i)
-                {
-                    System.out.println(instruments[i].getName());
-                }
+                //Synthesizer synthesizer = MidiSystem.getSynthesizer();
+                //synthesizer.open();
+                //Instrument instruments[];
+                //instruments = synthesizer.getDefaultSoundbank().getInstruments();
+                //for(int i=0; i<instruments.length; ++i)
+                //{
+                //    System.out.println(instruments[i].getName());
+                //}
         }
         catch (MidiUnavailableException ex)
         {

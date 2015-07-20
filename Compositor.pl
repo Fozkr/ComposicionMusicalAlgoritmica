@@ -67,7 +67,7 @@ escribirLista(List) :-
 % cancionRock/3(+escala,+melodía,-canción)
 % Crea una canción de rock a partir de una escala guía y una melodía base.
 cancionRock([],[],C) :-			% En su forma más simple pide una canción, sin especificar escala ni melodía inicial
-	random_between(4,8,R),		% Crea un número aleatorio para la duración total de la melodía (compases)
+	random_between(2,4,R),		% Crea un número aleatorio para la duración total de la melodía (compases)
 	D is R * 4,					% Convierte la duración de compases a tiempos
 	escogerEscala(E),			% Escoge una de las escalas que hay
 	tamano(E,S),				% Obtiene el tamaño de la escala de una vez para no tener que volver a calcularlo
@@ -105,19 +105,20 @@ cancionRock(E,S,M,X) :-			% Donde se construye la canción realmente
 % escogerEscala/1(-escala)
 % Escoge una escala a partir de un valor aleatorio.
 escogerEscala(E) :-
-	random_between(1,1,A),		% Genera números aleatorios para duraciones de distintas partes de la canción
+	random_between(1,3,A),		% Genera números aleatorios para duraciones de distintas partes de la canción
 	escogerEscalaEspecifica(A,E).
 
 % escogerEscalaEspecifica/2(+numeroAleatorio,-escala)
 escogerEscalaEspecifica(A,E) :-
 	A == 1,
-	E = [0,2,4,5,7,9,11, 12,14,16,17,19,21,23, 24,26,28,29,31,33,35, 36,38,40,41,43,45,47, 48,50,52,53,55,57,59, 60,62,64,65,67,69,71, 72,74,76,77,79,81,83, 84,86,88].  % Escala C mayor
+	% E = [0,2,4,5,7,9,11, 12,14,16,17,19,21,23, 24,26,28,29,31,33,35, 36,38,40,41,43,45,47, 48,50,52,53,55,57,59, 60,62,64,65,67,69,71, 72,74,76,77,79,81,83, 84,86,88].  % Escala C mayor
+	E = [24,26,28,29,31,33,35, 36,38,40,41,43,45,47, 48,50,52,53,55,57,59, 60,62,64,65,67,69,71, 72,74,76,77,79,81,83, 84,86,88].	% Escala C mayor
 escogerEscalaEspecifica(A,E) :-
 	A == 2,
-	E = [].
+	E = [24,26,27,29,31,32,35, 36,38,39,41,43,44,47, 48,50,51,53,55,56,59, 60,62,63,65,67,68,71, 72,74,75,77,79,80,83, 84,86,87].	% Harmonic minor
 escogerEscalaEspecifica(A,E) :-
 	A == 3,
-	E = [].
+	E = [24,25,28,29,31,32,35, 36,37,40,41,43,44,47, 48,49,52,53,55,56,59, 60,61,64,65,67,68,71, 72,73,76,77,79,80,83, 84,85,88].	% Byzantine
 % agregar más escalas!!!
 
 %
@@ -133,7 +134,8 @@ generarMelodia(E,S,D,M) :-
 	P is D - K,					% Duración total - duración de nota inicial
 	concatena([I],[K],A),		% Genera el par nota,duracion "A" para la nota inicial
 	generarNotas(E,S,P,I,1,N),	% Genera una lista de notas consecuentes N
-	concatena([A],N,M).			% Finalmente, concatena la nota inicial A con la lista de notas N, en M, la N NO va entre []
+	concatena([A],N,X),			% Finalmente, concatena la nota inicial A con la lista de notas N, en M, la N NO va entre []
+	concatena(X,X,M).
 
 % generarNotas/6(+escala,+tamaño,+duracionRestante,+notaAnterior,+duracionAnterior,-listaNotas)
 generarNotas(_,_,0,_,_,[]).		% Si la duración restante es 0, retorna la lista que ya trae
@@ -222,7 +224,7 @@ redondearDuracion(M,D,R) :-		% En cualquier otro caso (>=)
 generarTransicion(E,S,T) :-
 	random_between(1,S,R),		% Crea un número aleatorio para generar notas
 	nesimo(R,E,I),				% Escoje una nota inicial
-	generarNotas(E,S,4,I,1,T).	% Genera 2 compases de notas (tercer parámetro = 4)
+	generarNotas(E,S,8,I,1,T).	% Genera 4 compases de notas (tercer parámetro = 8)
 
 %
 % generarVerso/4(+escala,+tamaño,+duracionTotal,-verso)
