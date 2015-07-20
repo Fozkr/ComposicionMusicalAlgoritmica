@@ -67,7 +67,7 @@ escribirLista(List) :-
 % cancionRock/3(+escala,+melodía,-canción)
 % Crea una canción de rock a partir de una escala guía y una melodía base.
 cancionRock([],[],C) :-			% En su forma más simple pide una canción, sin especificar escala ni melodía inicial
-	random_between(2,4,R),		% Crea un número aleatorio para la duración total de la melodía (compases)
+	random_between(4,8,R),		% Crea un número aleatorio para la duración total de la melodía (compases)
 	D is R * 4,					% Convierte la duración de compases a tiempos
 	escogerEscala(E),			% Escoge una de las escalas que hay
 	tamano(E,S),				% Obtiene el tamaño de la escala de una vez para no tener que volver a calcularlo
@@ -75,11 +75,11 @@ cancionRock([],[],C) :-			% En su forma más simple pide una canción, sin espec
 	cancionRock(E,S,M,C).		% En su forma más compleja pide una canción, especificando una escala y una melodía
 
 cancionRock(E,S,M,X) :-			% Donde se construye la canción realmente
-	random_between(2,4,IA),		% Genera números aleatorios para duraciones de distintas partes de la canción
+	random_between(4,8,IA),		% Genera números aleatorios para duraciones de distintas partes de la canción
 	JA is IA * 4,
-	random_between(2,4,IB),
+	random_between(4,8,IB),
 	JB is IB * 4,
-	concatena([0],[0],ZZ),		% Genera un divisor 0,0 para dividir las partes de la canción
+	concatena([-1],[-1],ZZ),	% Genera un divisor 0,0 para dividir las partes de la canción
 	generarTransicion(E,S,T),	% Genera una transición a partir de la escala, la retorna en T
 	generarVerso(E,S,JA,V),		% Genera un verso a partir de la escala, la duración JA, lo retorna en V
 	generarCoro(E,S,JB,C),		% Genera un coro a partir de la escala, la duración JB, lo retorna en C
@@ -135,7 +135,7 @@ generarMelodia(E,S,D,M) :-
 	generarNotas(E,S,P,I,1,N),	% Genera una lista de notas consecuentes N
 	concatena([A],N,M).			% Finalmente, concatena la nota inicial A con la lista de notas N, en M, la N NO va entre []
 
-% generarNotas/4(+escala,+duracionRestante,+notaAnterior,+duracionAnterior,-listaNotas)
+% generarNotas/6(+escala,+tamaño,+duracionRestante,+notaAnterior,+duracionAnterior,-listaNotas)
 generarNotas(_,_,0,_,_,[]).		% Si la duración restante es 0, retorna la lista que ya trae
 generarNotas(_,_,0.0,_,_,[]).	% Si la duración restante es 0, retorna la lista que ya trae
 generarNotas(E,S,D,I,Q,X) :-
@@ -198,12 +198,12 @@ generarDuracion(V,D,N) :-
 generarDuracion(V,D,N) :-
 	D == 3,						% La nueva será la mitad de la anterior
 	A is V*2,
-	A < 4,						% Duración máxima: 2
+	A < 2,						% Duración máxima: 1
 	N is A.
 generarDuracion(V,D,N) :-
 	D == 3,						% La nueva será la mitad de la anterior
 	% A is V*2,
-	% A >= 4,					% Duración máxima: 2
+	% A >= 4,					% Duración máxima: 1
 	B is V/2,					% Si es menor a eso, se duplica en lugar de dividir
 	N is B.
 
@@ -230,14 +230,27 @@ generarTransicion(E,S,T) :-
 % Debe escoger una nota aleatoria con una duración aleatoria.
 % Por ahora siempre escoge la misma duración, 4.
 generarVerso(_,_,0,[]).
-generarVerso(M,S,D,V) :-
+generarVerso(E,S,D,V) :-
 	random_between(1,S,R),		% Crea un número aleatorio para generar notas
-	nesimo(R,M,I),				% Escoje una nota inicial
+	nesimo(R,E,I),				% Escoje una nota inicial
 	K is 4,						% Escoje una duración para esa nota inicial
 	P is D - K,					% Duración total - duración de nota inicial
-	concatena([I],[K],A),		% Genera el par nota,duracion "A" para la nota
-	generarVerso(M,S,P,N),		% Genera una lista de notas consecuentes S para el resto del verso
-	concatena([A],N,V).			% Finalmente, concatena la nota inicial A con la lista de notas S, en V
+	concatena([I],[K],A),			% Genera el par nota,duracion "A" para la nota
+	generarNotasVerso(E,S,P,I,N),	% Genera una lista de notas consecuentes S para el resto del verso
+	concatena([A],N,V).				% Finalmente, concatena la nota inicial A con la lista de notas S, en V
+	
+% generarNotasVerso/5(+escala,+tamaño,+duracionRestante,+notaAnterior,+duracionAnterior,-listaNotas)
+generarNotasVerso(_,_,0,_,[]).		% Si la duración restante es 0, retorna la lista que ya trae
+generarNotasVerso(_,_,0.0,_,[]).	% Si la duración restante es 0, retorna la lista que ya trae
+generarNotasVerso(E,S,D,I,X) :-
+	random_between(1,5,R),			% Crea un desplazamiento aleatorio a partir de la nota actual para la siguiente, por ahora entre 1 y 5
+	random_between(0,1,U),				% Crea un número aleatorio para escoger el signo del desplazamiento, 0 negativo, 1 positivo
+	generarNotaSiguiente(E,S,I,R,U,N),
+	K is 4,
+	P is D - K,							% Duración total - duración de nueva nota
+	concatena([N],[K],B),				% Genera el par nota,duracion "B" para la siguiente nota
+	generarNotasVerso(E,S,P,N,M),		% Continúa generando notas
+	concatena([B],M,X).					% Concatena la recién generada con las demás, la M NO va entre []
 	
 %
 % generarCoro/4(+escala,+tamaño,+duracionTotal,-verso)
@@ -246,7 +259,7 @@ generarVerso(M,S,D,V) :-
 generarCoro(E,S,D,C) :-
 	random_between(1,S,R),		% Crea un número aleatorio para generar notas
 	nesimo(R,E,I),				% Escoje una nota inicial
-	K is 2,						% Escoje una duración para esa nota inicial
+	K is 1,						% Escoje una duración para esa nota inicial
 	P is D - K,					% Duración total - duración de nota inicial
 	concatena([I],[K],A),		% Genera el par nota,duracion "A" para la nota inicial
 	generarNotas(E,S,P,I,1,N),	% Genera una lista de notas consecuentes N

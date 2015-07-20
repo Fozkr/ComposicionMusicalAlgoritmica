@@ -78,8 +78,8 @@ public class ConexionProlog {
                 String division = " ";
                 String[] sinEspacios = strLinea.split(division);
                 // For de impresion temporal
-                for(int i = 0; i < sinEspacios.length; i++)
-                    System.out.println(sinEspacios[i]);
+                //for(int i = 0; i < sinEspacios.length; i++)
+                //    System.out.println(sinEspacios[i]);
             }
             // Se cierra el archivo
             entrada.close();
