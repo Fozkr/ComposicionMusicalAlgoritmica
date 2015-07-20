@@ -9,7 +9,7 @@
  * Julio, 2015.
  */
 import javax.swing.JFrame;
-//import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.SubstanceLookAndFeel;
 
 /**
  *
@@ -23,7 +23,7 @@ public class Main {
      */
      public static void main(String[] args) {
         JFrame.setDefaultLookAndFeelDecorated(true);
-        //SubstanceLookAndFeel.setSkin("org.jvnet.substance.skin.BusinessBlackSteelSkin");
+        SubstanceLookAndFeel.setSkin("org.jvnet.substance.skin.BusinessBlackSteelSkin");
         // Instancia de JFrame
         JFNotas interfaz = new JFNotas();
     }   
