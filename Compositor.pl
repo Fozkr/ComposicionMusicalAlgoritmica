@@ -4,8 +4,10 @@
 % CI-1441 Paradigmas Computacionales
 % I-2015, Prof. Dr. Alvaro de la Ossa
 % Oscar Esquivel Oviedo, B22410
+% Diana Garbanzo Quirós, B12685
 %
 % Proyecto de composición musical algorítmica
+% Sistema de reglas
 %
 % ------------------------------------------------------------------------------
 
@@ -79,24 +81,24 @@ cancionRock(E,S,M,X) :-			% Donde se construye la canción realmente
 	JA is IA * 4,
 	random_between(4,8,IB),
 	JB is IB * 4,
-	concatena([-1],[-1],ZZ),	% Genera un divisor 0,0 para dividir las partes de la canción
+	concatena([-1],[-1],ZZ),	% Genera un divisor -1,-1 para dividir las partes de la canción
 	generarTransicion(E,S,T),	% Genera una transición a partir de la escala, la retorna en T
 	generarVerso(E,S,JA,V),		% Genera un verso a partir de la escala, la duración JA, lo retorna en V
 	generarCoro(E,S,JB,C),		% Genera un coro a partir de la escala, la duración JB, lo retorna en C
 	generarCoroElevado(E,S,C,K),% Genera el coro elevado a partir del coro normal, lo retorna en K
-	concatena(M,[ZZ],AA),		% Mete 0,0 para dividir
+	concatena(M,[ZZ],AA),		% Mete -1,-1 para dividir
 	concatena(AA,T,BB),			% Une lo anterior con la transición
-	concatena(BB,[ZZ],CC),		% Mete 0,0 para dividir
+	concatena(BB,[ZZ],CC),		% Mete -1,-1 para dividir
 	concatena(CC,V,DD),			% Une lo anterior con el primer verso
-	concatena(DD,[ZZ],EE),		% Mete 0,0 para dividir
+	concatena(DD,[ZZ],EE),		% Mete -1,-1 para dividir
 	concatena(EE,C,FF),			% Une lo anterior con el primer coro
-	concatena(FF,[ZZ],GG),		% Mete 0,0 para dividir
+	concatena(FF,[ZZ],GG),		% Mete -1,-1 para dividir
 	concatena(GG,T,HH),			% Une lo anterior con la transición
-	concatena(HH,[ZZ],II),		% Mete 0,0 para dividir
+	concatena(HH,[ZZ],II),		% Mete -1,-1 para dividir
 	concatena(II,V,JJ),			% Une lo anterior con el segundo verso
-	concatena(JJ,[ZZ],KK),		% Mete 0,0 para dividir
+	concatena(JJ,[ZZ],KK),		% Mete -1,-1 para dividir
 	concatena(KK,K,LL),			% Une lo anterior con el coro elevado
-	concatena(LL,[ZZ],MM),		% Mete 0,0 para dividir
+	concatena(LL,[ZZ],MM),		% Mete -1,-1 para dividir
 	concatena(MM,M,NN),			% Une lo anterior con la melodía para terminar
 	X = NN,
 	escribirLista(X).			% Imprime la canción en un archivo para que Java la lea
@@ -188,7 +190,7 @@ generarDuracionSiguiente(V,N) :-
 generarDuracion(V,D,N) :-
 	D == 1,						% La nueva será la mitad de la anterior
 	A is V/2,
-	A > 1/4,					% Duración mínima: 1/4
+	A > 1/4,					% Duración mínima: 1/2
 	N is A.
 generarDuracion(V,D,N) :-
 	D == 1,						% La nueva será la mitad de la anterior
